@@ -14,7 +14,6 @@
               :selectItem="item"
               @onDelete="handleSelect"
             />
-            
           </div>
           <input
             type="text"
@@ -24,12 +23,17 @@
             v-model="debounceSearch"
           />
           <ResultSearch
-            v-if="debounceSearch!==''&& list.length>0"
+            v-if="debounceSearch !== '' && list.length > 0"
             @onSelect="handleSelect"
             :list="list"
             :listSelect="listSelect"
           />
-          <div class="search__output" v-else-if="keySearch!==''&& list.length===0 "><p class="notify">Không tìm thấy</p> </div>
+          <div
+            class="search__output"
+            v-else-if="keySearch !== '' && list.length === 0"
+          >
+            <p class="notify">Không tìm thấy</p>
+          </div>
         </div>
       </div>
     </div>
@@ -74,10 +78,10 @@ export default {
     },
     debounce(value, delay) {
       clearTimeout(this.timeoutID);
-      if(value){
+      if (value) {
         this.timeoutID = setTimeout(() => {
-        this.keySearch = value;
-      }, delay);
+          this.keySearch = value;
+        }, delay);
       }
     },
   },
@@ -100,6 +104,9 @@ export default {
     debounceSearch(newValue) {
       this.debounce(newValue, 500);
     },
+  },
+  destroyed() {
+    clearTimeout(this.timeoutID);
   },
 };
 </script>
@@ -203,7 +210,7 @@ export default {
   margin: 0;
   transition: 0.2s;
 }
-.notify{
+.notify {
   padding: 12px;
 }
 </style>
